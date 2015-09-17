@@ -11,6 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::model('shops', 'Shop');
+Route::model('products', 'Product');
+
+Route::bind('products', function($value, $route) {
+	return App\Product::whereSlug($value)->first();
 });
+Route::bind('shops', function($value, $route) {
+	return App\Shop::whereSlug($value)->first();
+});
+
+Route::get('/', function(){
+	return Redirect::away('/shops');
+});
+
+Route::resource('shops', 'ShopsController');
+Route::resource('shops.products', 'ProductsController');
