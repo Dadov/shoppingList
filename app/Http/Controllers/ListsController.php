@@ -18,6 +18,7 @@ class ListsController extends Controller
     protected $rules = [
         'name' => ['required', 'min:3'],
         'slug' => ['required', 'unique:s_lists,slug'],
+        'products' =>['required'],
     ];
     /**
      * Display a listing of the resource.
