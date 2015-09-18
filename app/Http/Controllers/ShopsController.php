@@ -12,6 +12,13 @@ use App\Http\Controllers\Controller;
 
 class ShopsController extends Controller
 {
+	protected $rules = [
+		'name' => ['required', 'min:3'],
+		'slug' => ['required', 'unique:shops,slug'],
+		'latitude' => ['required', 'numeric' ],
+		'longitude' => ['required', 'numeric' ],
+	];
+	
     /**
      * Display a listing of the resource.
      *
@@ -39,8 +46,9 @@ class ShopsController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
+		$this->validate($request, $this->rules);
         $input = Input::all();
 		Shop::create( $input );
 	 
@@ -76,8 +84,10 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Shop $shop)
+    public function update(Shop $shop, Request $request)
     {
+		$this->validate($request, $this->rules);
+
         $input = array_except(Input::all(), '_method');
 		$shop->update($input);
 	 

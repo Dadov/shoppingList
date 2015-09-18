@@ -11,4 +11,8 @@ class Shop extends Model
     public function products(){
 		return $this->hasMany('App\Product');
 	}
+	
+	public function lists(){
+		return $this->hasMany('App\SList');
+	}
 }

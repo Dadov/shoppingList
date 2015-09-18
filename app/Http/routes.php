@@ -13,12 +13,16 @@
 
 Route::model('shops', 'Shop');
 Route::model('products', 'Product');
+Route::model('lists', 'SList');
 
 Route::bind('products', function($value, $route) {
 	return App\Product::whereSlug($value)->first();
 });
 Route::bind('shops', function($value, $route) {
 	return App\Shop::whereSlug($value)->first();
+});
+Route::bind('lists', function($value, $route){
+	return App\SList::whereSlug($value)->first();
 });
 
 Route::get('/', function(){
@@ -27,3 +31,4 @@ Route::get('/', function(){
 
 Route::resource('shops', 'ShopsController');
 Route::resource('shops.products', 'ProductsController');
+Route::resource('shops.lists', 'ListsController');

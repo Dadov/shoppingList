@@ -6,6 +6,7 @@ use Input;
 use Redirect;
 use Illuminate\Http\Request;
 
+use App\SList;
 use App\Product;
 use App\Shop;
 use App\Http\Requests;
@@ -13,6 +14,11 @@ use App\Http\Controllers\Controller;
 
 class ProductsController extends Controller
 {
+	protected $rules = [
+		'name' => ['required', 'min:3'],
+		'slug' => ['required', 'unique:products,slug'],
+		'price' => ['required', 'numeric'],
+	];
     /**
      * Display a listing of the resource.
      *
@@ -39,8 +45,10 @@ class ProductsController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Shop $shop)
+    public function store(Shop $shop, Request $request)
     {
+		$this->validate($request, $this->rules);
+		
         $input = Input::all();
 		$input['shop_id'] = $shop->id;
 		Product::create( $input );
@@ -77,8 +85,10 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Shop $shop, Product $product)
+    public function update(Shop $shop, Product $product, Request $request)
     {
+		$this->validate($request, $this->rules);
+		
         $input = array_except(Input::all(), '_method');
 		$product->update($input);
 		
