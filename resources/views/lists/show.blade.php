@@ -9,6 +9,7 @@
  	<ul>
  		@foreach($list->products as $product)
  		<li>
+ 			 {{$product->pivot->quantity}}x
  			{{$product->name}}
  		</li>
  		@endforeach

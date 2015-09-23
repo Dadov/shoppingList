@@ -12,4 +12,5 @@
 </div>
 <div class="form-group">
     {!! Form::submit($submit_text, ['class'=>'btn primary']) !!}
+     <a href="{{URL::previous()}}" class="btn primary">Cancel</a>
 </div>

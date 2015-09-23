@@ -16,13 +16,13 @@ class ProductsController extends Controller
 {
 	protected $rules = [
 		'name' => ['required', 'min:3'],
-		'slug' => ['required', 'unique:products,slug'],
+		'slug' => ['required'],
 		'price' => ['required', 'numeric'],
 	];
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
+     * @param  Shop
+     * @return view
      */
     public function index(Shop $shop)
     {
@@ -31,8 +31,9 @@ class ProductsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
+     * 
+     * @param  Shop
+     * @return view
      */
     public function create(Shop $shop)
     {
@@ -42,8 +43,9 @@ class ProductsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param  Shop
+     * @param  Request
+     * @return redirect with a message
      */
     public function store(Shop $shop, Request $request)
     {
@@ -59,8 +61,9 @@ class ProductsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param  Shop
+     * @param  Product
+     * @return view
      */
     public function show(Shop $shop, Product $product)
     {
@@ -70,8 +73,9 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param  Shop
+     * @param  Product
+     * @return view
      */
     public function edit(Shop $shop, Product $product)
     {
@@ -81,30 +85,29 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param  Shop
+     * @param  Product
+     * @param  Request
+     * @return redirect with a message
      */
     public function update(Shop $shop, Product $product, Request $request)
     {
 		$this->validate($request, $this->rules);
-		
-        $input = array_except(Input::all(), '_method');
+        $input = Input::all();
 		$product->update($input);
-		
 		return Redirect::route('shops.products.show', [$shop->slug, $product->slug])->with('message','Product updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param  Shop
+     * @param  Product
+     * @return redirect with a message
      */
     public function destroy(Shop $shop, Product $product)
     {
         $product->delete();
-		
 		return Redirect::route('shops.show', $shop->slug)->with('message','Product deleted');
     }
 }
